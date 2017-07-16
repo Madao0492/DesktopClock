@@ -26,6 +26,23 @@ namespace DesktopClock
             timer1.Enabled = true;
 
             this.RefreshDateTime();
+
+            // ウィンドウの位置・サイズを復元
+            Bounds = Properties.Settings.Default.Bounds;
+            WindowState = Properties.Settings.Default.WindowState;
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // ウィンドウの位置・サイズを保存
+            if (WindowState == FormWindowState.Normal)
+                Properties.Settings.Default.Bounds = Bounds;
+            else
+                Properties.Settings.Default.Bounds = RestoreBounds;
+
+            Properties.Settings.Default.WindowState = WindowState;
+
+            Properties.Settings.Default.Save();
         }
 
         #region タイマーで実行する関数（時計の更新）
@@ -47,5 +64,6 @@ namespace DesktopClock
         {
             this.RefreshDateTime();
         }
+
     }
 }
